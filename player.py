@@ -3,7 +3,7 @@ from pygame import mixer
 import tkinter.messagebox
 import tkinter.filedialog
 import os
-from mutagen.mp3 import MP3     # for checking the metadata of music file
+from mutagen.mp3 import MP3  # for checking the metadata of music file
 
 # creating a window
 window = tkinter.Tk()
@@ -55,33 +55,36 @@ text.pack(pady=10)
 timeLabel = tkinter.Label(window, text="Total Length - --:--")
 timeLabel.pack(pady=10)
 
-#to change the top text into the song name
+
+# to change the top text into the song name
 
 def show_details():
-    text['text'] = "Playing "+ os.path.basename(filename)
+    text['text'] = "Playing " + os.path.basename(filename)
 
-    file_data = os.path.splitext(filename)            # to split the extention and location of file and store into tuple
+    file_data = os.path.splitext(filename)  # to split the extention and location of file and store into tuple
 
     # to calculate the length
 
     if file_data[1] == ".mp3":
         x = MP3(filename).info.length
-        #print(x)
+        # print(x)
     else:
-        x = mixer.Sound(filename).get_length()       # ---> only works on .wav or ogg file
+        x = mixer.Sound(filename).get_length()  # ---> only works on .wav or ogg file
 
     # dividing by 60, quotient inside mins and reminder inside secs
-    mins , secs = divmod(x, 60)
-    mins = round(mins)          # it will be in decimal so rounding it off
+    mins, secs = divmod(x, 60)
+    mins = round(mins)  # it will be in decimal so rounding it off
     secs = round(secs)
 
-    timeformat='{:02d}:{:02d}'.format(mins, secs)     # {:02d} means 2 digit integer if it is single digit place 0 at starting
+    timeformat = '{:02d}:{:02d}'.format(mins,
+                                        secs)  # {:02d} means 2 digit integer if it is single digit place 0 at starting
 
-    timeLabel['text'] = "Total Length - "+timeformat
+    timeLabel['text'] = "Total Length - " + timeformat
+
 
 def play_fun():
     global paused
-    if paused is True:     # to check whether the paused is initialized or not
+    if paused is True:  # to check whether the paused is initialized or not
         mixer.music.unpause()
         statusBar['text'] = "Playing " + os.path.basename(filename)
         paused = False
@@ -95,7 +98,9 @@ def play_fun():
             tkinter.messagebox.showerror("file not found", "Please Select a track first.")
             print("ERROR")
 
+
 paused = False
+
 
 def pause_fun():
     global paused
@@ -115,7 +120,7 @@ def volume_fun(val):
 
 
 middle_frame = tkinter.Frame(window)
-middle_frame.pack(padx=15, pady=10)                    # pack and grid are layout manager
+middle_frame.pack(padx=15, pady=10)  # pack and grid are layout manager
 
 # for play
 play = tkinter.PhotoImage(file="Images\play_button (1).png")
@@ -132,8 +137,9 @@ stop = tkinter.PhotoImage(file="Images\stop.png")
 stop_btn = tkinter.Button(middle_frame, image=stop, command=stop_fun)
 stop_btn.pack(side=tkinter.LEFT, padx=7)
 
-#to switch bw the vol pic
+# to switch bw the vol pic
 vol_btn = False
+
 
 def mute_vol():
     global vol_btn
@@ -149,7 +155,7 @@ def mute_vol():
         vol_btn = False
 
 
-#frame for scale and vol pic
+# frame for scale and vol pic
 volume_frame = tkinter.Frame(window)
 volume_frame.pack()
 
