@@ -4,6 +4,7 @@ import tkinter.messagebox
 import tkinter.filedialog
 import os
 from mutagen.mp3 import MP3  # for checking the metadata of music file
+import sys
 
 # creating a window
 window = tkinter.Tk()
@@ -17,6 +18,24 @@ def browse_files():
     global filename
     filename = tkinter.filedialog.askopenfilename()  # file location will store in the filename
     # print(filename)
+
+
+def get_resource(path):
+    """
+    Function to return resource's actual path.
+    To be used for getting proper path to a local file like PNG, ICO etc. as they are not loaded when
+    the package is made using PyInstaller.
+    :param path: Relative path of the resource file
+    :return: Proper path to the resource.
+    """
+    try:
+        # TEMP folder path for PyInstaller
+        # noinspection PyUnresolvedReferences
+        base_path = sys._MEIPASS
+    except Exception:
+        # print('exception')
+        base_path = os.path.abspath('.')
+    return os.path.join(base_path, path)
 
 
 # creating submenu
@@ -45,7 +64,7 @@ window.title("Music")  # for title of window
 
 # r stand for raw string , generally used for entering location
 # title icon
-window.iconbitmap(r"Images\music.ico")
+window.iconbitmap(get_resource("assets/music.ico"))
 
 # label is a widget act as container
 # for text
@@ -123,17 +142,17 @@ middle_frame = tkinter.Frame(window)
 middle_frame.pack(padx=15, pady=10)  # pack and grid are layout manager
 
 # for play
-play = tkinter.PhotoImage(file="Images\play_button (1).png")
+play = tkinter.PhotoImage(file=get_resource("assets/play_button (1).png"))
 play_btn = tkinter.Button(middle_frame, image=play, command=play_fun)  # calling function play when btn pressed
 play_btn.pack(side=tkinter.LEFT, padx=7)
 
 # for pause
-pause = tkinter.PhotoImage(file="Images\play_button (2).png")
+pause = tkinter.PhotoImage(file=get_resource("assets/play_button (2).png"))
 pause_btn = tkinter.Button(middle_frame, image=pause, command=pause_fun)
 pause_btn.pack(side=tkinter.LEFT, padx=7)
 
 # for stop
-stop = tkinter.PhotoImage(file="Images\stop.png")
+stop = tkinter.PhotoImage(file=get_resource("assets/stop.png"))
 stop_btn = tkinter.Button(middle_frame, image=stop, command=stop_fun)
 stop_btn.pack(side=tkinter.LEFT, padx=7)
 
@@ -160,8 +179,8 @@ volume_frame = tkinter.Frame(window)
 volume_frame.pack()
 
 # volume icon
-vol_pic = tkinter.PhotoImage(file="Images\\volume.png")
-novol_pic = tkinter.PhotoImage(file="Images\\no_sound.png")
+vol_pic = tkinter.PhotoImage(file=get_resource("assets/volume.png"))
+novol_pic = tkinter.PhotoImage(file=get_resource("assets/no_sound.png"))
 vol_icon = tkinter.Button(volume_frame, image=vol_pic, command=mute_vol)
 vol_icon.grid(row=0, column=0, padx=5)
 
